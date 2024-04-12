@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
 import config from "../../../config";
-import { TUser } from "./user.interface";
+import { TUserRegistration } from "./register.interface";
+import bcrypt from "bcrypt";
+import prisma from "../../../shared/prisma";
 
-const prisma = new PrismaClient();
-
-const createUser = async (payload: TUser) => {
+const registerUser = async (payload: TUserRegistration) => {
     const hashedPassword = await bcrypt.hash(
         payload.password,
         Number(config.salt_rounds)
@@ -29,6 +27,6 @@ const createUser = async (payload: TUser) => {
     };
 };
 
-export const UserService = {
-    createUser,
+export const RegisterService = {
+    registerUser,
 };

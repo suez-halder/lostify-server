@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { UserService } from "./user.service";
+import { RegisterService } from "./register.service";
 
-const createUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response) => {
     try {
-        const result = await UserService.createUser(req.body);
+        const result = await RegisterService.registerUser(req.body);
 
         res.status(201).json({
             success: true,
-            message: "User created successfully!",
+            message: "User registered successfully",
             data: result,
         });
     } catch (err) {
@@ -19,6 +19,6 @@ const createUser = async (req: Request, res: Response) => {
     }
 };
 
-export const UserController = {
-    createUser,
+export const RegisterController = {
+    registerUser,
 };
