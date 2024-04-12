@@ -9,22 +9,44 @@ const registerUser = async (payload: TUserRegistration) => {
         Number(config.salt_rounds)
     );
 
-    const userData = {
-        name: payload.name,
-        email: payload.email,
-        password: hashedPassword,
+    const userData = await prisma.$transaction(async (tx) => {
+        const createUser = await tx.user.create({
+            data: {
+                name: payload.name,
+                email: payload.email,
+                password: hashedPassword,
+            },
+        });
+
+        await tx.userProfile.create({
+            data: {
+                userId: createUser.id,
+                ...payload.profile,
+            },
+        });
+
+        return createUser;
+    });
+
+    const response = await prisma.user.findUniqueOrThrow({
+        where: {
+            id: userData.id,
+        },
+        include: {
+            userProfile: true,
+        },
+    });
+
+    const result = {
+        id: response.id,
+        name: response.name,
+        email: response.email,
+        createdAt: response.createdAt,
+        updatedAt: response.updatedAt,
+        profile: response?.userProfile,
     };
 
-    const result = await prisma.user.create({
-        data: userData,
-    });
-    return {
-        id: result.id,
-        name: result.name,
-        email: result.email,
-        createdAt: result.createdAt,
-        updatedAt: result.updatedAt,
-    };
+    return result;
 };
 
 export const RegisterService = {
