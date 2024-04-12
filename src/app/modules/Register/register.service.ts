@@ -45,8 +45,6 @@ const registerUser = async (payload: TUserRegistration) => {
         updatedAt: response.updatedAt,
         profile: response?.userProfile,
     };
-
-    return result;
 };
 
 export const RegisterService = {
