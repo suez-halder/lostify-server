@@ -1,9 +1,9 @@
 import prisma from "../../../shared/prisma";
 import { TLoginUser } from "./login.interface";
+import bcrypt from "bcrypt";
 
 const loginUser = async (payload: TLoginUser) => {
     // check-1: if email exists
-    // check-2: password compare for the email holding user
 
     const userData = await prisma.user.findUniqueOrThrow({
         where: {
@@ -11,7 +11,14 @@ const loginUser = async (payload: TLoginUser) => {
         },
     });
 
-    console.log(userData);
+    // check-2: password compare
+
+    const isPasswordMatched = await bcrypt.compare(
+        payload.password,
+        userData.password
+    );
+
+    // generate token
 };
 
 export const LoginService = {
