@@ -13,7 +13,8 @@ const globalErrorHandler = (
     let statusCode = 500;
     let message = "Something went wrong!";
 
-    let errorDetails;
+    //TODO: declare type for error details
+    let errorDetails: any;
 
     if (err instanceof ZodError) {
         const simplifiedError = handleZodError(err);
