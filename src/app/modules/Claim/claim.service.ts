@@ -25,7 +25,21 @@ const createClaimIntoDB = async (payload: TClaim, user: TAuthUser) => {
         );
     }
 
-    //check-3: same user, same found item, barbar claim korte parbena
+    // TODO: check-3: same user, same found item, barbar claim korte parbena
+    const isAlreadyClaimed = await prisma.claim.findFirst({
+        where: {
+            userId: user.id,
+            foundItemId: foundItemData.id,
+            status: Status.PENDING,
+        },
+    });
+
+    if (isAlreadyClaimed) {
+        throw new ApiError(
+            httpStatus.BAD_REQUEST,
+            "This item has already been claimed!"
+        );
+    }
 
     const result = await prisma.claim.create({
         data: {
