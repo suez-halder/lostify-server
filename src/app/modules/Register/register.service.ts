@@ -28,23 +28,18 @@ const registerUser = async (payload: TUserRegistration) => {
         return createUser;
     });
 
-    const response = await prisma.user.findUniqueOrThrow({
+    const result = await prisma.user.findUniqueOrThrow({
         where: {
             id: userData.id,
         },
         include: {
-            userProfile: true,
+            profile: true,
         },
     });
 
-    const result = {
-        id: response.id,
-        name: response.name,
-        email: response.email,
-        createdAt: response.createdAt,
-        updatedAt: response.updatedAt,
-        profile: response?.userProfile,
-    };
+    const { password, ...userWithoutPassword } = result;
+
+    return userWithoutPassword;
 };
 
 export const RegisterService = {
