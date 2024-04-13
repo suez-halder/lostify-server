@@ -15,7 +15,19 @@ const createClaimIntoDB = catchAsync(async (req, res) => {
         data: result,
     });
 });
+const getMyClaims = catchAsync(async (req, res) => {
+    const user = req.user as TAuthUser;
+    const result = await ClaimService.getMyClaims(user);
+
+    sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: "Claims retrieved successfully",
+        data: result,
+    });
+});
 
 export const ClaimController = {
     createClaimIntoDB,
+    getMyClaims,
 };

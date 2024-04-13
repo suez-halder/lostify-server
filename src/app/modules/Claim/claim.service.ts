@@ -1,3 +1,4 @@
+import { Status } from "@prisma/client";
 import httpStatus from "http-status";
 import prisma from "../../../shared/prisma";
 import ApiError from "../../errors/ApiError";
@@ -31,16 +32,28 @@ const createClaimIntoDB = async (payload: TClaim, user: TAuthUser) => {
         );
     }
 
-    // const result = await prisma.claim.create({
-    //     data: {
-    //         ...payload,
-    //         userId: user.id,
-    //     },
-    // });
+    const result = await prisma.claim.create({
+        data: {
+            ...payload,
+            userId: user.id,
+        },
+    });
 
-    // return result;
+    return result;
+};
+
+const getMyClaims = async (user: TAuthUser) => {
+    const result = await prisma.claim.findMany({
+        where: {
+            userId: user.id,
+            status: Status.PENDING,
+        },
+    });
+
+    return result;
 };
 
 export const ClaimService = {
     createClaimIntoDB,
+    getMyClaims,
 };
