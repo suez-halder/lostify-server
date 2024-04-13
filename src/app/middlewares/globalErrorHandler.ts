@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
+import { ZodError } from "zod";
+import ApiError from "../errors/ApiError";
+import handleZodError from "../errors/handleZodError";
+import { TErrorDetails } from "../interfaces/error";
 
 const globalErrorHandler = (
     err: any,
@@ -7,10 +10,29 @@ const globalErrorHandler = (
     res: Response,
     next: NextFunction
 ) => {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+    let statusCode = 500;
+    let message = "Something went wrong!";
+
+    let errorDetails;
+
+    if (err instanceof ZodError) {
+        const simplifiedError = handleZodError(err);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message.join(". ") + ".";
+        errorDetails = { issues: [simplifiedError.errorDetails] };
+    } else if (err instanceof ApiError) {
+        statusCode = err?.statusCode;
+        message = err?.message;
+        errorDetails = err;
+    } else if (err instanceof Error) {
+        message = err?.message;
+        errorDetails = err;
+    }
+
+    return res.status(statusCode).json({
         success: false,
-        message: err.message || "Something went wrong!",
-        errorDetails: err,
+        message,
+        errorDetails,
     });
 };
 
