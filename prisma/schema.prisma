@@ -20,32 +20,32 @@ model User {
 }
 
 model FoundItemCategory {
-  id        String     @id @default(uuid())
+  id        String      @id @default(uuid())
   name      String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  foundItem FoundItem?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  foundItem FoundItem[]
 }
 
 model FoundItem {
   id            String            @id @default(uuid())
   userId        String
   user          User              @relation(fields: [userId], references: [id])
-  categoryId    String            @unique
+  categoryId    String
   category      FoundItemCategory @relation(fields: [categoryId], references: [id])
   foundItemName String
   description   String
   location      String
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
-  claim         Claim?
+  claim         Claim[]
 }
 
 model Claim {
   id                     String    @id @default(uuid())
   userId                 String
   user                   User      @relation(fields: [userId], references: [id])
-  foundItemId            String    @unique
+  foundItemId            String
   foundItem              FoundItem @relation(fields: [foundItemId], references: [id])
   status                 Status
   distinguishingFeatures String

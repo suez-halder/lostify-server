@@ -7,6 +7,8 @@ import { FoundItemValidation } from "./foundItem.validation";
 
 const router = express.Router();
 
+router.get("/", FoundItemController.getAllFoundItemsFromDB);
+
 router.post(
     "/",
     auth(UserRole.USER),

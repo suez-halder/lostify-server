@@ -17,6 +17,18 @@ const createFoundItemIntoDB = catchAsync(async (req, res) => {
     });
 });
 
+const getAllFoundItemsFromDB = catchAsync(async (req, res) => {
+    const result = await FoundItemService.getAllFoundItemsFromDB();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Found items retrieved successfully",
+        data: result,
+    });
+});
+
 export const FoundItemController = {
     createFoundItemIntoDB,
+    getAllFoundItemsFromDB,
 };
