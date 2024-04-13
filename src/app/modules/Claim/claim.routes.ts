@@ -16,4 +16,11 @@ router.post(
     ClaimController.createClaimIntoDB
 );
 
+router.patch(
+    "/:id",
+    auth(UserRole.USER),
+    validateRequest(ClaimValidation.updateClaimValidationSchema),
+    ClaimController.updateClaimStatus
+);
+
 export const ClaimRoutes = router;

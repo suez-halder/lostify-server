@@ -6,19 +6,12 @@ import { TAuthUser } from "../../interfaces/common";
 import { TClaim } from "./claim.interface";
 
 const createClaimIntoDB = async (payload: TClaim, user: TAuthUser) => {
+    //check-1: if the found item exists
     const foundItemData = await prisma.foundItem.findUniqueOrThrow({
         where: {
             id: payload.foundItemId,
         },
     });
-
-    console.log(foundItemData);
-
-    //check-1: if the found item exists
-
-    if (!foundItemData) {
-        throw new ApiError(httpStatus.BAD_REQUEST, "No item found!");
-    }
 
     // check-2: if the lostDate > foundDate
 
@@ -31,6 +24,8 @@ const createClaimIntoDB = async (payload: TClaim, user: TAuthUser) => {
             "Unable to proceed with claiming the item as it appears to have been reported lost after the date it was found."
         );
     }
+
+    //check-3: same user, same found item, barbar claim korte parbena
 
     const result = await prisma.claim.create({
         data: {
@@ -53,7 +48,37 @@ const getMyClaims = async (user: TAuthUser) => {
     return result;
 };
 
+const updateClaimStatus = async (
+    payload: { status: Status },
+    id: string,
+    user: TAuthUser
+) => {
+    //check : claim id valid kina. je claimed item approve/reject hobe, seta je user found korse, only she e status update korte parbe
+
+    const claimData = await prisma.claim.findUniqueOrThrow({
+        where: {
+            id,
+            status: Status.PENDING,
+            foundItem: {
+                user: {
+                    id: user.id,
+                },
+            },
+        },
+    });
+
+    const result = await prisma.claim.update({
+        where: {
+            id: claimData.id,
+        },
+        data: payload,
+    });
+
+    return result;
+};
+
 export const ClaimService = {
     createClaimIntoDB,
     getMyClaims,
+    updateClaimStatus,
 };

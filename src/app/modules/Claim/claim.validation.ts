@@ -10,7 +10,15 @@ const createClaimValidationSchema = z.object({
         }),
     }),
 });
+const updateClaimValidationSchema = z.object({
+    body: z.object({
+        status: z.string({
+            required_error: "Status is required",
+        }),
+    }),
+});
 
 export const ClaimValidation = {
     createClaimValidationSchema,
+    updateClaimValidationSchema,
 };

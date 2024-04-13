@@ -26,8 +26,21 @@ const getMyClaims = catchAsync(async (req, res) => {
         data: result,
     });
 });
+const updateClaimStatus = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const user = req.user as TAuthUser;
+    const result = await ClaimService.updateClaimStatus(req.body, id, user);
+
+    sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: "Claim updated successfully",
+        data: result,
+    });
+});
 
 export const ClaimController = {
     createClaimIntoDB,
     getMyClaims,
+    updateClaimStatus,
 };
