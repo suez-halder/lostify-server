@@ -3,6 +3,7 @@ import { ClaimRoutes } from "../modules/Claim/claim.routes";
 import { FoundItemRoutes } from "../modules/FoundItem/foundItem.routes";
 import { FoundItemCategoryRoutes } from "../modules/FoundItemCategory/foundItemCategory.routes";
 import { LoginRoutes } from "../modules/Login/login.routes";
+import { MyProfileRoutes } from "../modules/MyProfile/myProfile.routes";
 import { RegisterRoutes } from "../modules/Register/register.routes";
 
 const routes = express.Router();
@@ -27,6 +28,10 @@ const moduleRoutes = [
     {
         path: "/claims",
         route: ClaimRoutes,
+    },
+    {
+        path: "/my-profile",
+        route: MyProfileRoutes,
     },
 ];
 

@@ -25,7 +25,7 @@ const createClaimIntoDB = async (payload: TClaim, user: TAuthUser) => {
         );
     }
 
-    // TODO: check-3: same user, same found item, barbar claim korte parbena
+    // check-3: same user, same found item, barbar claim korte parbena
     const isAlreadyClaimed = await prisma.claim.findFirst({
         where: {
             userId: user.id,

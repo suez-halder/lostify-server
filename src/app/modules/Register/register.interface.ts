@@ -1,6 +1,6 @@
 import { UserRole } from "./register.constant";
 
-type TProfile = {
+export type TProfile = {
     bio: string;
     age: number;
 };
