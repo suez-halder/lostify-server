@@ -47,7 +47,7 @@ model Claim {
   user                   User      @relation(fields: [userId], references: [id])
   foundItemId            String
   foundItem              FoundItem @relation(fields: [foundItemId], references: [id])
-  status                 Status
+  status                 Status    @default(PENDING)
   distinguishingFeatures String
   lostDate               DateTime
   createdAt              DateTime  @default(now())

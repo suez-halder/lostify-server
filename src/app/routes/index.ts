@@ -1,4 +1,5 @@
 import express from "express";
+import { ClaimRoutes } from "../modules/Claim/claim.routes";
 import { FoundItemRoutes } from "../modules/FoundItem/foundItem.routes";
 import { FoundItemCategoryRoutes } from "../modules/FoundItemCategory/foundItemCategory.routes";
 import { LoginRoutes } from "../modules/Login/login.routes";
@@ -22,6 +23,10 @@ const moduleRoutes = [
     {
         path: "/found-items",
         route: FoundItemRoutes,
+    },
+    {
+        path: "/claims",
+        route: ClaimRoutes,
     },
 ];
 

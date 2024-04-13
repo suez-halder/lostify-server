@@ -34,7 +34,7 @@ const createFoundItemIntoDB = async (payload: TFoundItem, user: TAuthUser) => {
 
 const getAllFoundItemsFromDB = async (filters: any, options: any) => {
     const { limit, page, skip } = paginationHelper.calculatePagination(options);
-    const { searchTerm, specialties, ...filterData } = filters;
+    const { searchTerm, ...filterData } = filters;
 
     const andConditions: Prisma.FoundItemWhereInput[] = [];
 
