@@ -69,3 +69,7 @@ enum Status {
   APPROVED
   REJECTED
 }
+
+enum UserRole {
+  USER
+}

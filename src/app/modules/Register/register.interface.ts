@@ -1,3 +1,5 @@
+import { UserRole } from "./register.constant";
+
 type TProfile = {
     bio: string;
     age: number;
@@ -9,3 +11,5 @@ export type TUserRegistration = {
     password: string;
     profile: TProfile;
 };
+
+export type TUserRole = keyof typeof UserRole;
