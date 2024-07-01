@@ -5,6 +5,7 @@ import { TAuthUser } from "../../interfaces/common";
 import { MyProfileService } from "./myProfile.service";
 
 const getMyProfileFromDB = catchAsync(async (req, res) => {
+    console.log(req.user);
     const user = req.user as TAuthUser;
 
     const result = await MyProfileService.getMyProfileFromDB(user);
